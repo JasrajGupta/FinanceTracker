@@ -1,0 +1,80 @@
+<% layout("/layouts/boilerplate") %> 
+<body>
+   <div style="  margin: 1.5rem 0 1rem 1rem;" class="row">
+    <div class="col-6 offset-3 ">
+    <form method="Post" action="/transctions" novalidate class="needs-validation">
+        <div>
+        <label for="amount" class="form-label">Amount</label>
+        <input name="transction[amount]" placeholder="enter amount" type="number" class="form-control" required>
+         <div class="valid-feedback">Valid Amount!</div>
+        </div>
+
+           <div>
+        <label for="sourceType" class="form-label">Source Type</label>
+       <select name="transction[sourceType]" id="sourceType" type="text"  class="form-control" required>
+          <option value="">-- Select Category --</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+       </select>
+       </div>
+
+        <div id="categoryWrapper">
+          <label for="category" class="form-label"  >Transctions</label>
+          <select name="transction[category]" id="category" class="form-control" required>
+            <option value="">-- Select Category --</option>
+            <option value="Housing">Housing</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Health">Health</option>
+            <option value="Shopping">Shopping</option>
+             <option value="Others">Others</option>
+          </select>
+           <div class="valid-feedback">Sure entered expense category!</div>
+        </div> 
+      <div>
+           <label for="date" class="form-label">Date</label>
+          <input name="transction[date]" placeholder="enter dd/mm/yyyy" type="text" class="form-control" id="datepicker" required>
+       </div>
+       <div>
+           <label for="notes" class="form-label">Notes</label>
+        <textarea name="transction[notes]" placeholder="enter here" class="form-control" required></textarea>
+         <div class="valid-feedback">Optional!</div>
+        </div>
+        <br>
+        <button class="btn btn-dark">Add</button>
+      </form>
+         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    flatpickr("#datepicker", {
+      dateFormat: "Y-m-d", // Format required by HTML5 and your Mongoose Date field
+      defaultDate: new Date() // Optional: today's date pre-filled
+    });
+  </script>
+
+<script>
+  const sourceType = document.getElementById('sourceType');
+  const categoryWrapper = document.getElementById('categoryWrapper');
+  const categorySelect = document.getElementById('category');
+
+  function toggleCategoryField() {
+    if (sourceType.value === 'expense') {
+      categoryWrapper.style.display = 'block';
+      categorySelect.disabled = false;
+      categorySelect.setAttribute('required', 'required');
+    } else {
+      categoryWrapper.style.display = 'none';
+      categorySelect.disabled = true;
+      categorySelect.removeAttribute('required');
+      categorySelect.value = ""; // Clear selection to avoid backend error
+    }
+  }
+
+  sourceType.addEventListener('change', toggleCategoryField);
+  window.addEventListener('DOMContentLoaded', toggleCategoryField); // Ensure it runs on load
+</script>
+
+
+    </div>
+    </div>
+</body>

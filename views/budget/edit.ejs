@@ -1,0 +1,15 @@
+<% layout("/layouts/boilerplate") %>
+<div style="  margin: 1.5rem 0 1rem 1rem;" class="row">
+  <div class="col-6 offset-2">
+<h2>Edit Budget for <%= budget.month %></h2>
+<form action="/budget/<%= budget._id %>?_method=PUT" method="POST">
+  <% const cats = ['Housing','Food','Transport','Entertainment','Health','Shopping','Others']; %>
+  <% cats.forEach(cat => { %>
+    <label for="category" class="form-label"><%= cat %>:</label>
+    <input type="number" name="categories[<%= cat %>]" value="<%= budget.categories[cat] %>" class="form-control" required><br>
+  <% }) %>
+
+  <button type="submit" class="btn btn-dark">Update Budget</button>
+</form>
+</div>
+</div>

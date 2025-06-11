@@ -1,0 +1,30 @@
+<% layout("/layouts/boilerplate") %> 
+<body >
+    <div style="  margin: 1.5rem 0 1rem 1rem;" >
+    <h3> Transaction Details</h3>
+    <ul>
+        <li><%= transction._id%></li>
+        <li><%=transction.owner.username%></li>
+        <li>&#8377;<%= transction.amount.toLocaleString("en-IN")%></li>
+         <li><% if (transction.sourceType === "income") { %>
+              Received
+             <% } else { %>
+             <%= transction.category %>
+             <% } %></li>
+          <li><%= transction.sourceType%></li>
+           <li><%= transction.date.toLocaleDateString("en-IN", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }) %></li> 
+
+    <li><%= transction.notes%></li>
+    </ul>
+   <br>
+   <a href="/transctions/<%=transction._id%>/edit" class="btn btn-dark">Edit</a>
+   <form method="POST" action="/transctions/<%=transction._id%>?_method=DELETE">
+    <br>
+    <button class="btn btn-dark">Delete</button>
+   </form>
+   </div>
+</body>

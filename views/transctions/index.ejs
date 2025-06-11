@@ -1,0 +1,135 @@
+<% layout("/layouts/boilerplate") %> 
+<body>
+<div id="filters">
+        <div class="filter">
+         <a class="nav-link" href="/transctions/new"> <button class="filter-btn"><i class="fa-solid fa-indian-rupee-sign"></i></button></a>
+          <p>New Transaction</p>
+        </div>
+        <div class="filter">
+         <a class="nav-link" href='/budget'> <button  class="filter-btn"><i class="fa-solid fa-book"></i></button></a>
+          <p>Budget</p>
+        </div>
+        <div class="filter">
+        <a  class="nav-link" href='/transctions/calculator'><button  class="filter-btn"><i class="fa-solid fa-calculator"></i></button></a>  
+          <p>Calculator</p>
+        </div>
+        <div class="filter">
+         <a  class="nav-link" href='/transctions/recent'> <button  class="filter-btn"><i class="fa-solid fa-scroll"></i></button></a>  
+          <p>Old</p>
+        </div>
+       
+        <div class="filter">
+         <button onclick="loadSourceType('expense')" class="filter-btn"><i class="fa-solid fa-arrow-up"></i></button>
+          <p>Expense</p>
+        </div>
+        <div class="filter">
+          <button onclick="loadSourceType('income')" class="filter-btn"><i class="fa-solid fa-arrow-down"></i></button>
+          <p>Income</p>
+        </div>
+        <!-- Dropdown Transctions -->
+    <div class="dropdown-transctions">
+     <form method="GET" action="/transctions" style="margin: 1rem;">
+  <label>Select Month: </label>
+  <input type="month" name="month" value="<%= selectedMonth %>" style="border:none; height:40px;">
+  <button type="submit" class="btn btn-dark btn-sm ">Filter</button>
+</form>
+    </div>
+    </div>
+   <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 " >
+    <!-- Balance Box -->
+  <div class="balance-box">
+    <div class="recent-transctions">
+      <h4 style="color: #6c757d;">Balance</h4>
+      <h1 style="font-size: 2.5rem; color: #003366;">₹<%= (totalIncome - totalExpense).toLocaleString("en-IN") %></h1>
+  </div>
+  <br>
+<!-- recentTransctions -->
+ <div class="recent-transctions">
+       <h4 style="margin-bottom: 1rem; color: #6c757d;">Recent Transactions</h4>
+<% for(let transction of alltransctions) { %>
+  <a href="/transctions/<%= transction._id %>" class="card-text">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+      <span><% if (transction.sourceType === "income") { %>
+          Received
+         <% } else { %>
+         <%= transction.category %>
+         <% } %></span>
+      <span style="color: <%= transction.sourceType === 'income' ? '#28a745' : '#dc3545' %>;">
+        <%= transction.sourceType === 'income' ? '+' : '-' %>&#8377;<%= transction.amount.toLocaleString("en-IN") %>
+      </span>
+    </div>
+  </a>
+<% } %>
+</div>
+    </div>
+      <!-- Line Graph -->
+    <div class="line-graph">
+      <div class="chart-box">
+         <h4 style="margin-bottom: 5rem; color: #6c757d;">Budget Overview</h4>
+      <canvas id="lineChart"></canvas>
+      </div>
+      <div class="chart-box" style="margin-top: 6rem;">
+      <canvas id="donutChart"></canvas>
+      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+        <span style="color: #28a745;">● Income</span>
+        <span style="color: #dc3545;">● Expense</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const lineChart = new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [
+        {
+          label: 'Income',
+          data:<%- JSON.stringify(monthlyIncome) %>,
+          borderColor: '#28a745',
+          fill: false
+        },
+        {
+          label: 'Expense',
+          data:<%- JSON.stringify(monthlyExpense) %>,
+          borderColor: '#dc3545',
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  const donutChart = new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Income', 'Expense'],
+      datasets: [{
+        data: [<%= totalIncome %>, <%= totalExpense %>],
+        backgroundColor: ['#28a745', '#dc3545']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+</script>
+
+ <script>
+  function loadSourceType(sourceType) {
+    window.location.href = `/transctions/sourceType/${encodeURIComponent(sourceType)}`;
+  }
+</script>
+  
+</body>

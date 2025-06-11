@@ -1,0 +1,32 @@
+<% layout("/layouts/boilerplate") %> 
+<body>
+ <div style="  margin: 1.5rem 0 1rem 1rem;" class="row">
+   <div class="col-6 offset-3 ">
+<form action="/budget" method="POST"  novalidate class="needs-validation">
+  <div>
+  <label for="month" class="form-label">Month:</label>
+  <input type="month" name="month" id="monthPicker" class="form-control"placeholder="mm/yyyy" required>
+  </div>
+
+  <% const cats = ['Housing','Food','Transport','Entertainment','Health','Shopping','Others']; %>
+  <% cats.forEach(cat => { %>
+    <label for="cat" class="form-label"><%= cat %>:</label>
+    <input type="number" name="categories[<%= cat %>]"  class="form-control" required><br>
+  <% }) %>
+
+  <button  class="btn btn-dark" type="submit">Create Budget</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script>
+  flatpickr("#monthPicker", {
+    plugins: [new monthSelectPlugin({ shorthand: true, dateFormat: "Y-m", altFormat: "F Y" })],
+    dateFormat: "Y-m",
+    defaultDate: new Date() 
+  });
+</script>
+</div>
+</div>
+</body>

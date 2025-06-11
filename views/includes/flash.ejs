@@ -1,0 +1,27 @@
+
+<style>
+  @media only screen and (max-width: 768px) {
+    .alert {
+      width: 90% !important;
+      margin: 1rem auto !important;
+      left: 0 !important;
+      right: 0 !important;
+      padding: 1rem;
+    }
+  }
+</style>
+
+
+<% if(success && success.length) { %>
+  <div class="alert alert-success alert-dismissible fade show col-5 offset-3" role="alert" style="margin-top:1rem;">
+    <%= success %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if(error && error.length) { %>
+  <div class="alert alert-danger alert-dismissible fade show col-5 offset-3 " role="alert" style="margin-top:1rem;">
+    <%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>

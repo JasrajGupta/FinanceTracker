@@ -1,0 +1,121 @@
+<% layout("/layouts/boilerplate") %> 
+<div style="max-width: 390px; margin: 30px auto; padding: 20px; background: #ffffff; border-radius: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial;">
+  <h2 style="text-align: center; font-weight: 600; font-size: 24px; margin-bottom: 20px;">Currency Calculator</h2>
+
+  <!-- Currency Input -->
+  <div style="margin-bottom: 15px;">
+    <input id="currencyInput" type="number" placeholder="Enter amount" style="width: 100%; padding: 14px; font-size: 20px; border-radius: 15px; border: 1px solid #ccc; text-align: right;">
+  </div>
+
+  <!-- Currency Dropdown -->
+  <div style="margin-bottom: 15px;">
+    <select id="currencySelect" style="width: 100%; padding: 14px; font-size: 18px; border-radius: 15px; border: 1px solid #ccc;">
+      <option value="USD">USD – US Dollar</option>
+      <option value="EUR">EUR – Euro</option>
+      <option value="GBP">GBP – British Pound</option>
+      <option value="JPY">JPY – Japanese Yen</option>
+    </select>
+  </div>
+
+  <!-- INR Output -->
+  <div style="margin-bottom: 25px; font-size: 28px; font-weight: bold; color: 	#23BBA9; text-align: right;">
+    ₹ <span id="inrOutput">0.00</span>
+  </div>
+
+  <!-- Calculator Display -->
+  <input id="calcDisplay" readonly placeholder="0" style="width: 100%; font-size: 28px; padding: 14px; margin-bottom: 10px; text-align: right; border-radius: 15px; border: 1px solid #ccc; background: #f8f9fa;">
+
+  <!-- Calculator Buttons -->
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+    <% const buttons = ['7','8','9','/','4','5','6','*','1','2','3','-','0','.','=','+']; %>
+    <% buttons.forEach(btn => { %>
+      <button onclick="pressCalc('<%= btn %>')" style="padding: 20px; font-size: 22px; background: #f1f3f5; border: none; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s;">
+        <%= btn %>
+      </button>
+    <% }); %>
+    <button onclick="clearCalc()" style="grid-column: span 4; padding: 16px; font-size: 20px; background: 	#12625A; color: white; border: none; border-radius: 20px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">Clear</button>
+  </div>
+
+  <!-- Recent Calculations -->
+  <div style="margin-top: 25px;">
+    <h4 style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Recent Calculations</h4>
+    <ul id="calcHistory" style="list-style: none; padding-left: 0; font-size: 16px; color: #333;"></ul>
+  </div>
+</div>
+
+<!-- Script Section -->
+<script>
+  let exchangeRates = {};
+  let calcExpression = '';
+  let history = [];
+
+  // Fetch Live Currency Rates
+  async function fetchExchangeRates() {
+    try {
+      const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+      const data = await res.json();
+      exchangeRates = data.rates;
+      updateINR();
+    } catch (err) {
+      console.error('Error fetching rates:', err);
+    }
+  }
+
+  // Update INR Output
+  function updateINR() {
+    const amount = parseFloat(document.getElementById("currencyInput").value);
+    const selected = document.getElementById("currencySelect").value;
+
+    if (!exchangeRates['INR'] || !exchangeRates[selected]) {
+      document.getElementById("inrOutput").innerText = "0.00";
+      return;
+    }
+
+    const toINR = exchangeRates['INR'] / exchangeRates[selected];
+    const converted = amount * toINR;
+    document.getElementById("inrOutput").innerText = isNaN(converted) ? '0.00' : converted.toFixed(2);
+  }
+
+  document.getElementById("currencyInput").addEventListener("input", updateINR);
+  document.getElementById("currencySelect").addEventListener("change", updateINR);
+
+  // Calculator Logic
+  function pressCalc(val) {
+    if (val === '=') {
+      try {
+        const result = eval(calcExpression).toString();
+        addToHistory(calcExpression + ' = ' + result);
+        calcExpression = result;
+      } catch {
+        calcExpression = 'Error';
+      }
+    } else {
+      calcExpression += val;
+    }
+    document.getElementById("calcDisplay").value = calcExpression;
+  }
+
+  function clearCalc() {
+    calcExpression = '';
+    document.getElementById("calcDisplay").value = '';
+  }
+
+  function addToHistory(entry) {
+    history.unshift(entry);
+    if (history.length > 5) history.pop(); // Limit to last 5 entries
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const list = document.getElementById("calcHistory");
+    list.innerHTML = '';
+    history.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      li.style.padding = "6px 0";
+      list.appendChild(li);
+    });
+  }
+
+  fetchExchangeRates();
+</script>

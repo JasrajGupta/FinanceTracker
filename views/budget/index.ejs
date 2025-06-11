@@ -1,0 +1,125 @@
+<% layout("/layouts/boilerplate") %>
+
+<div id="filters">
+        <div class="filter">
+         <a class="nav-link" href="/budget/new"> <button class="filter-btn"><i class="fa-solid fa-indian-rupee-sign"></i></button></a>
+          <p>Create Budget</p>
+        </div>
+
+        <% if (budget) { %>
+  <div class="filter">
+    <a class="nav-link" href="/budget/<%= budget._id %>/edit">
+      <button class="filter-btn"><i class="fa-solid fa-file-pen"></i></button>
+    </a>
+    <p>Edit</p>
+  </div>
+<% } else { %>
+  <div >
+    <a class="nav-link" href="/budget/new">
+     
+    </a>
+   
+  </div>
+<% } %>
+&nbsp;&nbsp;&nbsp;
+
+         <div class="filter">
+         <a class="nav-link" href="/transctions/calculator"> <button class="filter-btn"><i class="fa-solid fa-calculator"></i></button></a>
+          <p>Calculator</p>
+        </div>
+         <div class="filter">
+         <a class="nav-link" href="/transctions/recent"> <button class="filter-btn"><i class="fa-solid fa-scroll"></i></button></a>
+          <p>Old</p>
+        </div>
+ </div>       
+
+<div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 " >
+
+ <div class="balance-box">
+    <div class="recent-transctions">
+      <h4 style="color: #6c757d;">Balance</h4>
+      <h1 style="font-size: 2.5rem; color: #003366;">₹<%= balance %></h1>
+  </div>
+  <br>
+  <div class="recent-transctions">
+  <h3>Progress</h3>
+  <div id="progressText">Used: ₹<%= totalSpent %> / ₹<%= totalBudget %></div>
+  <div style="background: #eee; border-radius: 20px;">
+    <div style="background: #42a5f5; width: <%= progressPercent %>%; border-radius: 20px; height: 20px;"></div>
+  </div>
+</div>
+<br>
+<!-- recentTransction -->
+<div class="recent-transctions">
+  <h3 style="margin-bottom: 1rem; color: #6c757d;">Recent Expenses</h3>
+ 
+  <ul>
+    <% recentTransactions.forEach(tx => { %>
+      <% if (tx.sourceType === "expense") { %>
+     <li>
+          <a href="/transctions/<%= tx._id %>" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: red; text-decoration: none; font-size:25px;">
+         <span> <% if (tx.category) { %>
+              <%= tx.category %>
+            <% } %></span>
+             <span>- ₹<%= tx.amount %> </span>
+          </a>
+        </li>
+      <% } %>
+    <% }) %>
+  </ul>
+ 
+</div>
+
+  </div>
+  
+  <Div class="line-graph">
+<!-- ActualvsbudgetTransctions -->
+ 
+ <div  class="chart-box">
+  <h3  style="margin-bottom: 5rem; color: #6c757d;">Budget vs Actual Spending</h3>
+  <canvas id="donutChart" ></canvas>
+
+ </div>
+
+<div  class="chart-box" style="margin-top: 9rem;">
+  <canvas id="pieChart" height="100"></canvas>
+</div>
+  </Div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const donutCtx = document.getElementById("donutChart").getContext("2d");
+  new Chart(donutCtx, {
+    type: "doughnut",
+    data: {
+      labels: <%- JSON.stringify(chartLabels) %>,
+      datasets: [{
+        label: "Budget",
+        data: <%- JSON.stringify(chartBudgetData) %>,
+        backgroundColor: "#42a5f5"
+      }, {
+        label: "Actual",
+        data: <%- JSON.stringify(chartActualData) %>,
+        backgroundColor: "#66bb6a"
+      }]
+    },
+    options: { cutout: "70%" }
+  });
+
+  const pieCtx = document.getElementById("pieChart").getContext("2d");
+  new Chart(pieCtx, {
+    type: "pie",
+    data: {
+      labels: <%- JSON.stringify(chartLabels) %>,
+      datasets: [{
+        label: "Budget",
+        data: <%- JSON.stringify(chartBudgetData) %>,
+        backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0", "#9966ff", "#ff9f40", "#c9cbcf"]
+      }]
+    }
+  });
+</script>
+
+

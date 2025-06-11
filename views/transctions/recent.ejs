@@ -1,0 +1,38 @@
+<% layout("/layouts/boilerplate") %> 
+
+<body>
+  <!-- <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+    <% for(let transction of alltransctions) { %>
+      <a href="/transctions/<%= transction._id %>" class="card-text">
+        <div class="card" style="width: 18rem; ">
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <h5 class="card-title">Recent Transctions</h5>
+            <div style="display: flex; justify-content: space-between;" class="card-text">
+              <span><%= transction.category %></span>
+              <span>&#8377;<%= transction.amount.toLocaleString("en-IN") %></span>
+            </div>
+          </div>
+        </div>
+      </a>
+    <% } %>
+  </div> -->
+
+  <div class="recent-transctions">
+       <h4 style="margin-bottom: 1rem; color: #6c757d;">Recent Transactions</h4>
+<% for(let transction of alltransctions) { %>
+  <a href="/transctions/<%= transction._id %>" class="card-text">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; border-bottom:1px solid rgba(0, 0, 0, 0.146);">
+      <span><% if (transction.sourceType === "income") { %>
+            Received
+           <% } else { %>
+           <%= transction.category %>
+           <% } %></span>
+      <span style="color: <%= transction.sourceType === 'income' ? '#28a745' : '#dc3545' %>;">
+        <%= transction.sourceType === 'income' ? '+' : '-' %>&#8377;<%= transction.amount.toLocaleString("en-IN") %>
+      </span>
+    </div>
+  </a>
+<% } %>
+</div>
+</body>

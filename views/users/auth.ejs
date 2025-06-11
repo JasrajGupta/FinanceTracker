@@ -1,0 +1,87 @@
+<% layout("/layouts/boilerplate") %>
+<body style="background: linear-gradient(400deg,#fff, #B8ECE8  ); min-height: 100vh;">
+<main class="container-fluid px-3 px-md-4 py-4"  >
+
+  <!-- Hero Section -->
+  <section class="text-center mb-5">
+    <h2 class="h3 h1-md mb-3" style="font-weight:700">Track Your Spending. Build Your Budget...</h2>
+    <p class="lead text-muted mb-0">Simple, powerful, and personalized – that's Khrcha.</p>
+  </section>
+
+  <!-- Device Preview Section -->
+  <section class="text-center mb-5">
+    <h2 class="h5 mb-4"style="font-weight:600" >The Only Web That Saves Your Every Khrcha..</h2>
+    <div class="w-100 overflow-hidden">
+      <img 
+        src="/images/ChatGPT Image Jun 5, 2025, 04_38_49 PM.png" 
+        alt="Preview" 
+        class="img-fluid rounded shadow mx-auto d-block" 
+        style="max-width: 100%; height: auto;"
+      >
+    </div>
+  </section>
+
+<!-- Getting Started Guide -->
+<section class="text-center mt-5 mb-4">
+  <h2 class="h3 mb-3 fw-bold">How to get your money into shape?</h2>
+  <p class="lead text-muted">Three simple steps to manage your money smarter.</p>
+
+  <!-- Cartoon Visual Guide -->
+  <div class="container mb-5">
+    <img 
+      src="/images/b95e3d1c-6a39-4148-af0c-7eb67e2520b5.png" 
+      alt="Finance guide illustration" 
+      class="img-fluid rounded shadow-sm" 
+      style="max-width: 100%; height: auto;"
+    >
+  </div>
+
+  <!-- Step-by-Step Card Guide -->
+  <div class="row justify-content-center gy-4">
+    <% const steps = [
+      {
+        icon: "fa-solid fa-pen-nib",
+        title: "Add Transactions",
+        desc: "Tap 'New Transaction', select income or expense, fill in amount and category. Done!"
+      },
+      {
+        icon: "fa-solid fa-chart-pie",
+        title: "Check Graphs",
+        desc: "See your spending vs income across months with line and donut charts on your dashboard."
+      },
+      {
+        icon: "fa-solid fa-bullseye",
+        title: "Set Budgets",
+        desc: "Go to the Budget section, assign limits to each category, and track how close you're getting."
+      }
+    ]; %>
+
+    <% steps.forEach(step => { %>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0" style="border-radius: 1rem;">
+          <div class="card-body text-center">
+            <div class="mb-3">
+              <i class="<%= step.icon %> fa-2x text-primary"></i>
+            </div>
+            <h5 class="card-title fw-semibold"><%= step.title %></h5>
+            <p class="card-text text-muted" style="font-size: 0.95rem;"><%= step.desc %></p>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</section>
+
+
+
+</main>
+
+<!-- Optional: Boost touch scaling and avoid accidental zoom on mobile -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</body>
+
+
+
+
+
+
