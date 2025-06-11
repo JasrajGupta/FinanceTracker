@@ -49,7 +49,7 @@ async function sendReminderEmail(to, username) {
         <p>Just a quick reminder to log your spending and income for today in <strong>Khrcha</strong>.</p>
         <p>Keeping track daily helps you stay on top of your budget. 💪</p>
         <p>If added avoid this mail.<p>
-        <a href="https:/transctions/new" style="padding: 10px 20px; background: #23BBA9; color: white; text-decoration: none; border-radius: 5px;">Add Today's Transaction</a>
+        <a href="https://khrcha.onrender.com/auth" style="padding: 10px 20px; background: #23BBA9; color: white; text-decoration: none; border-radius: 5px;">Add Today's Transaction</a>
         <p style="margin-top: 1rem;">– Team Khrcha</p>
       </div>
     `
