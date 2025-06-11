@@ -3,7 +3,7 @@ const { sendReminderEmail } = require("./emailSender");
 const User = require("../models/user"); // adjust to your path
 
 // Schedule: every day at 7:00 PM
-cron.schedule("0 18 * * *", async () => {
+cron.schedule("0 19 * * *", async () => {
   console.log("⏰ Running daily transaction reminder job...");
 
   try {
