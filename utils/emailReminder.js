@@ -1,5 +1,5 @@
 const cron = require("node-cron");
-const { sendReminderEmail } = require("./emailSender");
+const { sendReminderEmail } = require("./emailSender.js");
 const User = require("../models/user"); // adjust to your path
 
 // Schedule: every day at 7:00 PM
