@@ -22,11 +22,11 @@ router.post("/signup", wrapAsync(async(req, res) => {
     req.login(registeredUser, async (err) => {
       if (err) return next(err);
 
-      try {
-        await sendWelcomeEmail(registeredUser.email, registeredUser.username); // ✅ send real email
-      } catch (e) {
-        console.error("Signup email failed:", e);
-      }
+      // try {
+      //   await sendWelcomeEmail(registeredUser.email, registeredUser.username); // ✅ send real email
+      // } catch (e) {
+      //   console.error("Signup email failed:", e);
+      // }
 
       req.flash("success", `Welcome to Khrcha, ${registeredUser.username}`);
       res.redirect("/transctions");
@@ -48,13 +48,13 @@ router.post("/login",
   async (req, res) => {
     const { email, username } = req.user;
 
-    try {
-      await sendWelcomeEmail(email, username);
-    } catch (e) {
-      console.error("Email sending failed:", e);
-      // Optional: flash message for failure
-      req.flash("error", "Login successful, but email failed to send.");
-    }
+    // try {
+    //   await sendWelcomeEmail(email, username);
+    // } catch (e) {
+    //   console.error("Email sending failed:", e);
+    //   // Optional: flash message for failure
+    //   req.flash("error", "Login successful, but email failed to send.");
+    // }
 
     req.flash("success", `Welcome back to Khrcha, ${username}!`);
     const redirectUrl = res.locals.redirectUrl || "/transctions";
